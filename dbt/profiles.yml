@@ -1,0 +1,11 @@
+ecom_dev:
+  outputs:
+    dev:
+      type: mysql
+      server: 127.0.0.1
+      port: 3306
+      schema: ecom_raw
+      username: root
+      password: "{{ env_var('DB_PASSWORD') }}"
+      threads: 4
+  target: dev

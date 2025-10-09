@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: raw
+    tables:
+      - name: orders
+      - name: order_items
+      - name: events
+      - name: products
+
+models:
+  - name: stg_orders
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: customer_id
+        tests: [not_null]
+
+  - name: stg_order_items
+    columns:
+      - name: order_item_id
+        tests: [not_null, unique]
+      - name: order_id
+        tests: [not_null]
+
+  - name: fact_orders
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: customer_id
+        tests: [not_null, relationships]
