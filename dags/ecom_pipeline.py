@@ -42,5 +42,3 @@ with DAG(
         task_id='dbt_test',
         bash_command='cd /opt/dbt && dbt test --profiles-dir .'
     )
-
-    airbyte_sync >> run_spark_staging >> dbt_run >> dbt_test
