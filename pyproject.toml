@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+# ── Project metadata ──────────────────────────────────────────
+[project]
+name = "ecom-pipeline"
+version = "1.0.0"
+description = "End-to-end E-Commerce Data Pipeline — Kafka, Spark, dbt, Elasticsearch"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+
+dependencies = [
+    "kafka-python==2.0.2",
+    "sentence-transformers==2.2.2",
+    "elasticsearch==8.10.1",
+    "pyspark==3.5.0",
+    "pyyaml==6.0.1",
+    "numpy==1.24.3",
+    "pandas==2.0.3",
+    "psycopg2-binary==2.9.9",
+    "apache-airflow==2.7.0",
+    "flask==2.3.3",
+    "dbt-core==1.7.0",
+    "dbt-postgres==1.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "pytest-mock==3.12.0",
+    "pytest-cov==4.1.0",
+    "black==23.11.0",
+    "isort==5.12.0",
+    "flake8==6.1.0",
+    "mypy==1.7.0",
+    "pre-commit==3.5.0",
+]
+quality = [
+    "great-expectations==0.18.0",
+]
+
+# ── Setuptools: find packages in src/ ─────────────────────────
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"ecom_pipeline" = ["py.typed"]
+
+# ── pytest ────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-v --tb=short --cov=ecom_pipeline --cov-report=term-missing"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+# ── Black ─────────────────────────────────────────────────────
+[tool.black]
+line-length = 120
+target-version = ["py310"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | build
+  | dist
+  | __pycache__
+)/
+'''
+
+# ── isort ─────────────────────────────────────────────────────
+[tool.isort]
+profile = "black"
+line_length = 120
+known_first_party = ["ecom_pipeline"]
+
+# ── mypy ──────────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
+exclude = ["build", "dist", ".venv"]
+
+# ── coverage ──────────────────────────────────────────────────
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "*/__init__.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]

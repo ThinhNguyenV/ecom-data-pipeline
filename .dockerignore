@@ -1,0 +1,44 @@
+# ============================================================
+# .dockerignore — ecom-data-pipeline (root level)
+# ============================================================
+.git
+.gitignore
+.github
+.pre-commit-config.yaml
+*.md
+
+# Python caches
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+
+# dbt compiled output
+dbt/target
+dbt/dbt_packages
+dbt/logs
+
+# Terraform state
+infra/terraform/.terraform
+infra/terraform/*.tfstate*
+
+# Data / checkpoints
+data/
+*.parquet
+
+# Secrets
+.env
+.env.local
+
+# IDE
+.vscode
+.idea
+*.iml
+
+# Logs
+*.log
+logs/

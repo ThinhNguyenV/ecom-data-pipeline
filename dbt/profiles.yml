@@ -1,11 +1,13 @@
 ecom_dev:
   outputs:
     dev:
-      type: mysql
-      server: 127.0.0.1
-      port: 3306
-      schema: ecom_raw
-      username: root
-      password: "{{ env_var('DB_PASSWORD') }}"
+      type: postgres
+      host: "{{ env_var('DBT_HOST', 'localhost') }}"
+      port: "{{ env_var('DBT_PORT', '5432') | int }}"
+      dbname: "{{ env_var('DBT_DB', 'ecom_dw') }}"
+      user: "{{ env_var('DBT_USER', 'user') }}"
+      password: "{{ env_var('DBT_PASSWORD', 'password') }}"
+      schema: ecom_staging
       threads: 4
+      keepalives_idle: 0
   target: dev

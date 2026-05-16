@@ -1,0 +1,10 @@
+# dbt seed: raw customers
+# File: dbt/seeds/customers.csv
+# dbt will load this into ecom_raw.customers on `dbt seed`
+
+customer_id,first_name,last_name,email,country,created_at
+C001,Nguyen,Van A,vana@example.com,Vietnam,2024-01-01 00:00:00
+C002,Tran,Thi B,thib@example.com,Vietnam,2024-01-15 00:00:00
+C003,Le,Van C,vanc@example.com,Singapore,2024-02-01 00:00:00
+C004,Pham,Thi D,thid@example.com,Vietnam,2024-02-10 00:00:00
+C005,Hoang,Van E,vane@example.com,Thailand,2024-03-01 00:00:00

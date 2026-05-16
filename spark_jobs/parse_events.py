@@ -13,11 +13,7 @@ def main(input_path, output_path, master="local[*]"):
     # Read JSON (support glob)
     df = spark.read.option("multiline", "false").json(input_path)
 
-<<<<<<< HEAD
     # Basic normalisation - adapt to raw JSON schema
-=======
-    # Basic normalisation - adapt to your raw JSON schema
->>>>>>> a0a9c18 (first commit)
     if "timestamp" in df.columns:
         df = df.withColumn("event_dt", from_unixtime(col("timestamp")/1000))
     elif "event_ts" in df.columns:

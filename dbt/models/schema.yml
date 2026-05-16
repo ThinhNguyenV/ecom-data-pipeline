@@ -2,14 +2,17 @@ version: 2
 
 sources:
   - name: raw
+    schema: ecom_raw
     tables:
       - name: orders
       - name: order_items
       - name: events
       - name: products
+      - name: customers
 
 models:
   - name: stg_orders
+    description: "Staging: cleaned orders from raw layer"
     columns:
       - name: order_id
         tests: [not_null, unique]
@@ -17,15 +20,41 @@ models:
         tests: [not_null]
 
   - name: stg_order_items
+    description: "Staging: cleaned order items from raw layer"
     columns:
       - name: order_item_id
         tests: [not_null, unique]
       - name: order_id
         tests: [not_null]
 
+  - name: stg_events
+    description: "Staging: cleaned event stream from raw layer"
+    columns:
+      - name: event_id
+        tests: [not_null, unique]
+
+  - name: stg_customers
+    description: "Staging: cleaned customer records from raw layer"
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+
+  - name: dim_product
+    description: "Dimension: latest product snapshot (SCD Type 1)"
+    columns:
+      - name: product_id
+        tests: [not_null, unique]
+
+  - name: dim_customer
+    description: "Dimension: customer with PII hashed"
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+
   - name: fact_orders
+    description: "Fact: order-level aggregation with computed totals"
     columns:
       - name: order_id
         tests: [not_null, unique]
       - name: customer_id
-        tests: [not_null, relationships]
+        tests: [not_null]

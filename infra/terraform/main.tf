@@ -2,29 +2,55 @@ provider "aws" {
   region = var.region
 }
 
+# S3 raw bucket
 resource "aws_s3_bucket" "raw" {
   bucket = var.bucket_raw
+}
+
+# Fix: acl argument was deprecated in AWS provider v4+.
+# Use separate aws_s3_bucket_acl resource instead.
+resource "aws_s3_bucket_acl" "raw_acl" {
+  bucket = aws_s3_bucket.raw.id
   acl    = "private"
 
-  versioning {
-    enabled = true
-  }
+  depends_on = [aws_s3_bucket_ownership_controls.raw_ownership]
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  lifecycle_rule {
-    enabled = true
-    abort_incomplete_multipart_upload_days = 7
+resource "aws_s3_bucket_ownership_controls" "raw_ownership" {
+  bucket = aws_s3_bucket.raw.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
   }
 }
 
-# Example IAM role for Airflow / Spark to access the S3 buckets
+resource "aws_s3_bucket_versioning" "raw_versioning" {
+  bucket = aws_s3_bucket.raw.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "raw_sse" {
+  bucket = aws_s3_bucket.raw.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "raw_lifecycle" {
+  bucket = aws_s3_bucket.raw.id
+  rule {
+    id     = "abort-incomplete-multipart"
+    status = "Enabled"
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# IAM role for Airflow / Spark
 data "aws_iam_policy_document" "assume_role" {
   statement {
     actions = ["sts:AssumeRole"]

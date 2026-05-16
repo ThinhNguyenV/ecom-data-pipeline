@@ -4,21 +4,35 @@ config-version: 2
 
 profile: 'ecom_dev'
 
-source-paths: ["models"]
+# dbt v1.7+ path keys
+model-paths: ["models"]
 analysis-paths: ["analysis"]
 test-paths: ["tests"]
-data-paths: ["data"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
 macro-paths: ["macros"]
 
 target-path: "target"
 clean-targets:
   - "target"
-  - "dbt_modules"
+  - "dbt_packages"
 
 models:
   ecom_dbt:
-    materialized: view
+    +materialized: view
     staging:
       +materialized: table
+      +schema: ecom_staging
     marts:
       +materialized: table
+      +schema: ecom_marts
+
+seeds:
+  ecom_dbt:
+    +schema: ecom_raw
+    +quote_columns: false
+
+snapshots:
+  ecom_dbt:
+    +target_schema: ecom_snapshots
+    +strategy: check

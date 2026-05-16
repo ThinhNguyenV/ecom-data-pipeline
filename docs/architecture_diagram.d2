@@ -1,0 +1,28 @@
+direction: right
+
+Data_Source: { shape: cylinder; label: "Data Source\n(User Behavior, Products)" }
+
+Kafka: { shape: hexagon; label: "Apache Kafka\n(Ingestion & Streaming)" }
+
+Spark_Streaming: { shape: cloud; label: "PySpark Structured Streaming\n(Data Cleaning, Vector Processing)" }
+
+Data_Lake: { shape: cylinder; label: "Data Lake\n(Parquet on Local Storage/S3)" }
+
+Elasticsearch: { shape: cylinder; label: "Elasticsearch\n(Search Engine)" }
+
+PostgreSQL: { shape: cylinder; label: "PostgreSQL\n(Data Warehouse)" }
+
+Airflow: { shape: cloud; label: "Apache Airflow\n(Orchestration)" }
+
+Semantic_Search_API: { shape: rectangle; label: "Semantic Search API" }
+
+Data_Source -> Kafka: { label: "Events & Product Updates" }
+Kafka -> Spark_Streaming: { label: "Stream Data" }
+Spark_Streaming -> Data_Lake: { label: "Raw Data & Embeddings" }
+Spark_Streaming -> Elasticsearch: { label: "Product Data & Embeddings" }
+
+Airflow -> Data_Lake: { label: "Read for Batch Processing" }
+Airflow -> PostgreSQL: { label: "Write Aggregated Data" }
+
+Semantic_Search_API -> Elasticsearch: { label: "Query Embeddings & Text" }
+User -> Semantic_Search_API: { label: "Semantic Query" }

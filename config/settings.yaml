@@ -1,0 +1,31 @@
+kafka:
+  bootstrap_servers: "kafka:9092"
+  topics:
+    user_behavior: "user_behavior"
+    products: "products"
+  consumer_group: "ecom_consumer_group"
+
+spark:
+  app_name: "EcomDataPipelineStreaming"
+  master: "spark://spark-master:7077"
+  checkpoint_dir: "/home/ubuntu/ecom-data-pipeline/data/checkpoints"
+  output_dir: "/home/ubuntu/ecom-data-pipeline/data/raw"
+  jars:
+    - "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0"
+    - "org.elasticsearch:elasticsearch-spark-30_2.12:8.10.2"
+
+elasticsearch:
+  nodes: "elasticsearch"
+  port: 9200
+  index_products: "products"
+
+model:
+  name: "all-MiniLM-L6-v2"
+  vector_dims: 384
+
+postgres:
+  host: "postgres"
+  port: 5432
+  db: "ecom_dw"
+  user: "user"
+  password: "password"

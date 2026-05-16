@@ -1,0 +1,106 @@
+# ============================================================
+# .gitignore — ecom-data-pipeline
+# ============================================================
+
+# ── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+env/
+venv/
+.venv/
+ENV/
+.env.local
+.env.*.local
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+
+# ── pyproject / pip ───────────────────────────────────────
+*.whl
+MANIFEST
+
+# ── Jupyter ───────────────────────────────────────────────
+.ipynb_checkpoints
+*.ipynb
+
+# ── Java / Maven ──────────────────────────────────────────
+backend/target/
+backend/.mvn/timing.properties
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# ── IDE ───────────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Docker ────────────────────────────────────────────────
+deploy/docker/postgres_data/
+deploy/docker/es_data/
+deploy/docker/airflow_postgres_data/
+deploy/docker/airflow_logs/
+
+# ── Spark / Data ──────────────────────────────────────────
+data/raw/
+data/checkpoints/
+data/staging/
+*.parquet
+*.avro
+derby.log
+metastore_db/
+
+# ── dbt ───────────────────────────────────────────────────
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+dbt/.user.yml
+
+# ── Terraform ─────────────────────────────────────────────
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/.terraform.lock.hcl
+infra/terraform/crash.log
+
+# ── Secrets / Environment ────────────────────────────────
+.env
+!.env                    # track the template
+*.pem
+*.key
+secrets/
+credentials.json
+service_account.json
+
+# ── Great Expectations ───────────────────────────────────
+great_expectations/uncommitted/
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+logs/
+backend/logs/

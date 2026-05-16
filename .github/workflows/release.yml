@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build backend Docker image
+        run: |
+          docker build -t ecom-pipeline-backend:${{ github.ref_name }} backend/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          body: |
+            ## ecom-data-pipeline ${{ github.ref_name }}
+
+            Docker image: `ecom-pipeline-backend:${{ github.ref_name }}`

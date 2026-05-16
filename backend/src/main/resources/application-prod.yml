@@ -1,0 +1,31 @@
+# application-prod.yml — Production profile
+# Activated with: SPRING_PROFILES_ACTIVE=prod
+
+spring:
+  jpa:
+    show-sql: false
+
+  # Connection pool tuned for production load
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+
+logging:
+  level:
+    com.ecom.pipeline: INFO
+    org.springframework: WARN
+    org.hibernate: WARN
+
+# Only expose health and info in production
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: never  # don't leak internal details publicly

@@ -1,0 +1,42 @@
+# docker-compose.override.yml — Development overrides
+# This file is automatically loaded by docker compose alongside docker-compose.yml
+# It adds dev-specific settings: volume mounts for hot-reload, exposed debug ports
+
+version: '3.8'
+
+services:
+
+  # Mount dbt code into Airflow so changes reflect immediately
+  airflow-webserver:
+    volumes:
+      - ../../../dbt:/opt/dbt
+      - ../../../spark_jobs:/opt/spark_jobs
+      - ../../../src:/opt/src
+
+  airflow-scheduler:
+    volumes:
+      - ../../../dbt:/opt/dbt
+      - ../../../spark_jobs:/opt/spark_jobs
+      - ../../../src:/opt/src
+
+  # Mount data dir for easy local inspection
+  spark-master:
+    volumes:
+      - ../../../spark_jobs:/opt/spark_jobs
+      - ../../../data:/data
+
+  spark-worker:
+    volumes:
+      - ../../../data:/data
+
+  # Backend: disable Docker build, use JAR from local Maven build instead
+  # Uncomment the below to run backend outside Docker and comment out the backend service in docker-compose.yml
+  # Then: cd backend && mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+  backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+    ports:
+      - "8090:8090"
+      - "5005:5005"    # Remote debug port
