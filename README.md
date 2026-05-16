@@ -254,8 +254,3 @@ make clean           # Remove build artifacts
 3. Pre-commit runs automatically on commit (black, isort, flake8, sqlfluff)
 4. PR to `develop` branch → CI runs all 5 jobs automatically
 
----
-
-## License
-
-MIT © Data Engineering Team
